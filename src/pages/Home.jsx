@@ -43,7 +43,7 @@ const Home = () => {
     }
   };
   const downloadPDF = (filePath) => {
-    const baseURL = process.env.REACT_APP_BACKEND_API_URL;
+    const baseURL = process.env.REACT_APP_API_URL;
     const fullURL = `${baseURL}${filePath}`;
 
     const link = document.createElement("a");
