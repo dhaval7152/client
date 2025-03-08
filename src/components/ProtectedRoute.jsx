@@ -24,7 +24,7 @@ const ProtectedRoute = () => {
         return;
       }
 
-      fetch(`${process.env.REACT_APP_API_URL}/api/auth/verify-token`, {
+      fetch(`${process.env.REACT_APP_BACKEND_API_URL}/api/auth/verify-token`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
