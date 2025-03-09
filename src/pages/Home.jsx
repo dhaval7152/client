@@ -33,10 +33,13 @@ const Home = () => {
     arrows: true,
   };
 
-  const handleGeneratePDF = () => {
+  const handleGeneratePDF = async () => {
     if (selectedProducts.length >= 10) {
       const user = JSON.parse(localStorage.getItem("user"));
       dispatch(generatePDF({ selectedProducts, user }));
+      if (fileId) {
+        toast("PDF generated successfully");
+      }
     } else {
       toast("Select at least 10 products");
     }
@@ -52,7 +55,10 @@ const Home = () => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    } catch (error) {}
+      toast("PDF downloaded successfully");
+    } catch (error) {
+      toast("Error downloading PDF");
+    }
   };
 
   const handleSelect = (product) => {
