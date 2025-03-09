@@ -47,7 +47,6 @@ const Login = () => {
       toast.error(error);
       dispatch(clearError());
     }
-    console.log("user", user);
     if (user) {
       toast.success("Logged In successful!");
       dispatch(clearError());

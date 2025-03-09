@@ -1,12 +1,16 @@
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const baseURL = process.env.REACT_APP_API_URL;
+const token = localStorage.getItem("token");
 
-export const register = async (userData) =>
-  axios.post(`${API_URL}/api/auth/register`, userData);
-export const login = async (userData) =>
-  axios.post(`${API_URL}/login`, userData);
-export const getProfile = async (token) =>
-  axios.get(`${API_URL}/profile`, {
-    headers: { Authorization: `Bearer ${token}` },
+export const dowloadPdf = async (fileId) => {
+  const fullURL = `${baseURL}/api/pdf/dowloadPdf/${fileId}`;
+
+  const response = await axios.get(fullURL, {
+    responseType: "blob",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
+  return response.data;
+};

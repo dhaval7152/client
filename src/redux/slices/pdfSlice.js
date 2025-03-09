@@ -16,7 +16,7 @@ export const generatePDF = createAsyncThunk(
 
 const pdfSlice = createSlice({
   name: "pdf",
-  initialState: { filePath: null, loading: false, error: null },
+  initialState: { fileId: null, loading: false, error: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -26,7 +26,7 @@ const pdfSlice = createSlice({
       })
       .addCase(generatePDF.fulfilled, (state, action) => {
         state.loading = false;
-        state.filePath = action.payload.filePath;
+        state.fileId = action.payload.fileId;
       })
       .addCase(generatePDF.rejected, (state, action) => {
         state.loading = false;

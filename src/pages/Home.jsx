@@ -9,16 +9,15 @@ import { fetchProducts } from "../redux/slices/productSlice";
 import { generatePDF } from "../redux/slices/pdfSlice";
 import { Button } from "@mui/material";
 import Navbar from "../components/Navbar";
-import { getProfile } from "../redux/slices/authSlice";
 import { toast, ToastContainer } from "react-toastify";
+import { dowloadPdf } from "../api";
 
 const Home = () => {
   const images = ["./tiles1.jpg", "./tiles2.jpg", "./tiles3.jpg"];
   const dispatch = useDispatch();
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const { products, loading } = useSelector((state) => state.products);
-  const { filePath } = useSelector((state) => state.pdf);
-
+  const { products } = useSelector((state) => state.products);
+  const { fileId } = useSelector((state) => state.pdf);
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
@@ -42,16 +41,18 @@ const Home = () => {
       toast("Select at least 10 products");
     }
   };
-  const downloadPDF = (filePath) => {
-    const baseURL = process.env.REACT_APP_API_URL;
-    const fullURL = `${baseURL}${filePath}`;
 
-    const link = document.createElement("a");
-    link.href = fullURL;
-    link.setAttribute("download", filePath.split("/").pop());
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handledownloadPDF = async (fileId) => {
+    try {
+      const blob = await dowloadPdf(fileId);
+      const blobURL = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobURL;
+      link.setAttribute("download", `Products-Catalog-${fileId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {}
   };
 
   const handleSelect = (product) => {
@@ -94,14 +95,14 @@ const Home = () => {
         >
           Generate PDF
         </Button>
-        {filePath && (
-          // <a href={`${filePath}`} download>
+        {fileId && (
+          // <a href={`${fileId}`} download>
           //   Download PDF
           // </a>
           <Button
             variant="contained"
             color="success"
-            onClick={() => downloadPDF(filePath)}
+            onClick={() => handledownloadPDF(fileId)}
             startIcon={<DownloadIcon />}
           >
             Download PDF
